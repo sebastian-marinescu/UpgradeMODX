@@ -27,9 +27,6 @@ class UpgradeMODXTest extends PHPUnit_Framework_TestCase {
     /** @var $forcePclZip boolean */
     protected $forcePclZip = false;
 
-    /** @var $forceFopen boolean */
-    protected $forceFopen = false;
-
     /** @var $plOnly boolean */
     protected $plOnly = true;
 
@@ -108,7 +105,6 @@ class UpgradeMODXTest extends PHPUnit_Framework_TestCase {
         'plOnly' => true,
         'language' => 'en',
         'forcePclZip' => false,
-        'forceFopen' => false,
     );*/
 
     /** @var  $ugm MODXInstaller */
@@ -141,19 +137,21 @@ class UpgradeMODXTest extends PHPUnit_Framework_TestCase {
 
         $path = dirname(__FILE__) . '/modx.zip';
         unlink($path);
-        $url = 'http://modx.com/download/direct/modx-2.4.1-pl.zip';
+        // $url = 'https://modx.com/download/direct/modx-2.4.1-pl.zip';
+        $url = 'https://modx.s3.amazonaws.com/releases/' . '2.4.1' . '/modx-' . '2.4.1-pl' . '.zip';
         $method = 'curl';
-        $certPath = MODX_CORE_PATH . 'components/upgrademods/cacert.pem';
+        $certPath = MODX_CORE_PATH . 'components/upgrademodx/cacert.pem';
         MODXInstaller::downloadFile($url, $path, $method, $certPath);
         $this->assertFileExists($path);
         $this->assertNotEmpty(filesize($path));
-        fwrite(STDOUT, "\n File Size: " . $this->formatSizeUnits(filesize($path)));
+        // fwrite(STDOUT, "\n File Size: " . $this->formatSizeUnits(filesize($path)));
     }
 
     public function testDownloadFileFopen() {
         $path = dirname(__FILE__) . '/modx.zip';
         unlink($path);
-        $url = 'http://modx.com/download/direct/modx-2.4.1-pl.zip';
+        // $url = 'https://modx.com/download/direct/modx-2.4.1-pl.zip';
+        $url = 'https://modx.s3.amazonaws.com/releases/' . '2.4.1' . '/modx-' . '2.4.1-pl' . '.zip';
         $method = 'fopen';
         MODXInstaller::downloadFile($url, $path, $method);
         $this->assertFileExists($path);
